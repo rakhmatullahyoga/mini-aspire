@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class Loan extends Model
@@ -18,4 +19,9 @@ class Loan extends Model
         'term',
         'loan_date',
     ];
+
+    public function repayments(): HasMany
+    {
+        return $this->hasMany(Repayment::class);
+    }
 }

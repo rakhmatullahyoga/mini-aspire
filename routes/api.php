@@ -18,7 +18,17 @@ Route::post('/login', [App\Http\Controllers\UserController::class, 'login']);
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function() {
     Route::get('/admin/loans', [App\Http\Controllers\AdminController::class, 'loans']);
-    Route::post('/admin/loans/{id}/approve', [App\Http\Controllers\AdminController::class, 'approve']);
+    Route::post('/admin/loans/{loan}/approve', [App\Http\Controllers\AdminController::class, 'approve'])->missing(function (Request $request) {
+        return response()->json([
+            'status' => 'failed',
+            'message' => 'Loan not found'
+        ], 404);
+    });
 });
 
-Route::middleware('auth:sanctum')->resource('loans', App\Http\Controllers\LoanController::class);
+Route::middleware('auth:sanctum')->resource('loans', App\Http\Controllers\LoanController::class)->missing(function (Request $request) {
+    return response()->json([
+        'status' => 'failed',
+        'message' => 'Loan not found'
+    ], 404);
+});

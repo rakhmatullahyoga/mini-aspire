@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Loan;
+use App\Models\Repayment;
+use DateTime;
 use Illuminate\Http\Request;
 
 class LoanController extends Controller
@@ -28,6 +30,17 @@ class LoanController extends Controller
         $input['user_id'] = $request->user()->id;
         $input['status'] = 'pending';
         $loan = Loan::create($input);
+        $repayment_amount = $input['amount'] / (float) $input['term'];
+        $due_date = new DateTime($input['loan_date']);
+        for ($i=0; $i<$input['term']; $i++) {
+            $due_date->modify('+7 day');
+            $repayment = new Repayment;
+            $repayment->loan_id = $loan->id;
+            $repayment->status = 'pending';
+            $repayment->amount = $repayment_amount;
+            $repayment->due_date = $due_date;
+            $repayment->save();
+        }
         return response()->json([
             'status' => 'success',
             'data' => $loan
@@ -37,24 +50,17 @@ class LoanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Loan $loan)
+    public function show(Request $request, Loan $loan)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Loan $loan)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Loan $loan)
-    {
-        //
+        if ($request->user()->cannot('view', $loan)) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Cannot find your loan'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 'success',
+            'data' => $loan
+        ]);
     }
 }

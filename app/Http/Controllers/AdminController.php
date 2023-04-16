@@ -16,15 +16,8 @@ class AdminController extends Controller
         ]);
     }
 
-    public function approve(string $id)
+    public function approve(Loan $loan)
     {
-        $loan = Loan::find($id);
-        if ($loan == null) {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Loan not found'
-            ]);
-        }
         $loan->status = 'approved';
         $loan->save();
         return response()->json([
