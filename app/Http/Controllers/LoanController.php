@@ -63,4 +63,19 @@ class LoanController extends Controller
             'data' => $loan
         ]);
     }
+
+    public function show_repayments(Request $request, Loan $loan)
+    {
+        if ($request->user()->cannot('view', $loan)) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Cannot find your loan'
+            ], 404);
+        }
+        $repayments = $loan->repayments()->latest()->paginate(10);
+        return response()->json([
+            'status' => 'success',
+            'data' => $repayments
+        ]);
+    }
 }
