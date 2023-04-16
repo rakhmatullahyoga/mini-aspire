@@ -22,6 +22,6 @@ php artisan serve
 ```
 
 ### Test API
-1. Import the Postman collection attached in the repository: `Mini Aspire.postman_collection.json`
+1. Import the [Postman collection](Mini-Aspire.postman_collection.json) attached in the repository
 2. Hit Login API with the given users credentials in the [database seeder file](database/seeders/DatabaseSeeder.php)
 3. Test all scenarios
