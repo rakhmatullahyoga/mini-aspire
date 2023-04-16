@@ -32,6 +32,12 @@ Start the REST API server by running the following command
 php artisan serve
 ```
 
+### Unit Test
+Run unit test by running the following command
+```
+php artisan test
+```
+
 ### Test API
 1. Import the [Postman collection](Mini-Aspire.postman_collection.json) attached in the repository
 2. Hit Login API with the given users credentials in the [database seeder file](database/seeders/DatabaseSeeder.php)
