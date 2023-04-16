@@ -6,6 +6,7 @@ use App\Models\Loan;
 use App\Models\Repayment;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class LoanController extends Controller
 {
@@ -76,6 +77,52 @@ class LoanController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => $repayments
+        ]);
+    }
+
+    public function pay_repayments(Request $request, Loan $loan)
+    {
+        $validator = Validator::make($request->all(), [
+            'amount' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        if ($request->user()->cannot('view', $loan)) {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Cannot find your loan'
+            ], 404);
+        }
+        if ($loan->status != 'approved') {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Cannot submit repayment'
+            ], 422);
+        }
+        $repayments = $loan->repayments()->where('status', 'pending');
+        if ($repayments->count() > 0) {
+            $repayment = $repayments->first();
+            $input = $request->all();
+            if ($input['amount'] < $repayment->amount) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Insufficient payment'
+                ], 422);
+            } else {
+                $repayment->status = 'paid';
+                $repayment->save();
+                if ($loan->repayments()->where('status', 'pending')->count() === 0) {
+                    $loan->status = 'paid';
+                    $loan->save();
+                }
+            }
+        }
+        return response()->json([
+            'status' => 'success',
+            'data' => $repayment
         ]);
     }
 }

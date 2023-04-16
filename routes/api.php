@@ -39,4 +39,9 @@ Route::middleware('auth:sanctum')->get('/loans/{loan}/repayments', [App\Http\Con
         'message' => 'Loan not found'
     ], 404);
 });
-// Route::middleware('auth:sanctum')->post('/loans/{loan}/repayments', [App\Http\Controllers\LoanController::class, 'pay_repayments']);
+Route::middleware('auth:sanctum')->post('/loans/{loan}/repayments', [App\Http\Controllers\LoanController::class, 'pay_repayments'])->missing(function (Request $request) {
+    return response()->json([
+        'status' => 'failed',
+        'message' => 'Loan not found'
+    ], 404);
+});
