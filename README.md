@@ -13,7 +13,18 @@ Mini-Aspire is an app that allows authenticated users to go through a loan appli
 ```
 git clone git@github.com:rakhmatullahyoga/mini-aspire.git
 ```
-2. TBD
+2. Install libraries
+```
+composer install
+```
+3. Set environment variables and adjust values
+```
+cp .env.example .env
+```
+4. Setup database
+```
+php artisan migrate --seed
+```
 
 ## Running the application
 Start the REST API server by running the following command
