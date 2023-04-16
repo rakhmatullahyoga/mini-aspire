@@ -19,9 +19,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\User::factory()->create([
-            'name' => 'Customer',
-            'email' => 'customer@mini-aspire.com',
-            'password' => bcrypt('customer'),
+            'name' => 'Customer 1',
+            'email' => 'customer1@mini-aspire.com',
+            'password' => bcrypt('customer1'),
+        ]);
+
+        \App\Models\User::factory()->create([
+            'name' => 'Customer 2',
+            'email' => 'customer2@mini-aspire.com',
+            'password' => bcrypt('customer2'),
         ]);
     }
 }

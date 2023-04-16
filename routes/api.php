@@ -15,3 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login', [App\Http\Controllers\UserController::class, 'login']);
+
+Route::middleware('auth:sanctum')->get('/admin/loans', [App\Http\Controllers\AdminController::class, 'loans']);
+
+Route::middleware('auth:sanctum')->resource('loans', App\Http\Controllers\LoanController::class);
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
