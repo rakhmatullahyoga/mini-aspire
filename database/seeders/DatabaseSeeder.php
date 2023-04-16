@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@mini-aspire.com',
             'password' => bcrypt('admin'),
+            'is_admin' => true,
         ]);
 
         \App\Models\User::factory()->create([
