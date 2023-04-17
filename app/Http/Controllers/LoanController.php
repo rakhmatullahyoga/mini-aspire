@@ -90,7 +90,7 @@ class LoanController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        if ($request->user()->cannot('view', $loan)) {
+        if ($request->user()->cannot('update', $loan)) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Cannot find your loan'

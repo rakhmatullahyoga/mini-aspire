@@ -35,7 +35,7 @@ php artisan serve
 ### Unit Test
 Run unit test by running the following command
 ```
-php artisan test
+php artisan test [--parallel]
 ```
 
 ### Test API
