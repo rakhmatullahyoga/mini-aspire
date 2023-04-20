@@ -9,20 +9,20 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/rakhmatullahyoga/mini-aspire/auth"
-	"github.com/rakhmatullahyoga/mini-aspire/auth/mocks"
 	"github.com/rakhmatullahyoga/mini-aspire/commons"
+	"github.com/rakhmatullahyoga/mini-aspire/internal/auth"
+	"github.com/rakhmatullahyoga/mini-aspire/internal/auth/mocks"
 	"github.com/stretchr/testify/suite"
 )
 
 type AuthHandlerTestSuite struct {
 	suite.Suite
-	uc      *mocks.AuthUsecase
+	uc      *mocks.IAuthUsecase
 	handler http.Handler
 }
 
 func (s *AuthHandlerTestSuite) SetupTest() {
-	s.uc = new(mocks.AuthUsecase)
+	s.uc = new(mocks.IAuthUsecase)
 	s.handler = auth.NewHandler(s.uc).Router()
 }
 

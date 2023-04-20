@@ -22,7 +22,7 @@ var (
 	errInvalidLogin = errors.New("invalid username or password")
 )
 
-//go:generate mockery --name=UserRepository --structname UserRepository --filename=UserRepository.go --output=mocks
+//go:generate mockery --name=IUserRepository --structname IUserRepository --filename=IUserRepository.go --output=mocks
 type IUserRepository interface {
 	FindByUsername(username string) *User
 	StoreUser(user User) error

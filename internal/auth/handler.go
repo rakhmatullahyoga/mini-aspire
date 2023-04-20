@@ -14,7 +14,7 @@ type credentials struct {
 	Username *string `json:"username" validate:"required"`
 }
 
-//go:generate mockery --name=AuthUsecase --structname AuthUsecase --filename=AuthUsecase.go --output=mocks
+//go:generate mockery --name=IAuthUsecase --structname IAuthUsecase --filename=IAuthUsecase.go --output=mocks
 type IAuthUsecase interface {
 	Login(username, password string) (Token, error)
 	Register(username, password string) (Token, error)

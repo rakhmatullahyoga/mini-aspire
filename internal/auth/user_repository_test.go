@@ -3,7 +3,7 @@ package auth_test
 import (
 	"testing"
 
-	"github.com/rakhmatullahyoga/mini-aspire/auth"
+	"github.com/rakhmatullahyoga/mini-aspire/internal/auth"
 	"github.com/stretchr/testify/suite"
 )
 
