@@ -5,33 +5,26 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-playground/validator/v10"
+	"github.com/rakhmatullahyoga/mini-aspire/commons"
 )
 
 type credentials struct {
-	Password *string `json:"password"`
-	Username *string `json:"username"`
+	Password *string `json:"password" validate:"required"`
+	Username *string `json:"username" validate:"required"`
 }
 
-type SuccessResponse struct {
-	Status string `json:"status"`
-	Token  Token  `json:"token"`
-}
-
-type ErrorResponse struct {
-	Status  string `json:"status"`
-	Message string `json:"message"`
-}
-
-type AuthUsecase interface {
+//go:generate mockery --name=AuthUsecase --structname AuthUsecase --filename=AuthUsecase.go --output=mocks
+type IAuthUsecase interface {
 	Login(username, password string) (Token, error)
 	Register(username, password string) (Token, error)
 }
 
 type handler struct {
-	uc AuthUsecase
+	uc IAuthUsecase
 }
 
-func NewHandler(uc AuthUsecase) *handler {
+func NewHandler(uc IAuthUsecase) *handler {
 	return &handler{
 		uc: uc,
 	}
@@ -47,11 +40,17 @@ func (h *handler) Router() *chi.Mux {
 func (h *handler) login(w http.ResponseWriter, r *http.Request) {
 	var creds credentials
 	err := json.NewDecoder(r.Body).Decode(&creds)
-	if err != nil || creds.Username == nil || creds.Password == nil {
-		res := ErrorResponse{
-			Status:  "failed",
-			Message: "invalid parameter",
-		}
+	if err != nil {
+		res := commons.BuildErrorResponse("invalid request body")
+		w.WriteHeader(http.StatusBadRequest)
+		_ = json.NewEncoder(w).Encode(res)
+		return
+	}
+
+	validate := validator.New()
+	err = validate.Struct(creds)
+	if err != nil {
+		res := commons.BuildErrorResponse("invalid parameter")
 		w.WriteHeader(http.StatusBadRequest)
 		_ = json.NewEncoder(w).Encode(res)
 		return
@@ -59,18 +58,19 @@ func (h *handler) login(w http.ResponseWriter, r *http.Request) {
 
 	token, err := h.uc.Login(*creds.Username, *creds.Password)
 	if err != nil {
-		res := ErrorResponse{
-			Status:  "failed",
-			Message: err.Error(),
-		}
+		res := commons.BuildErrorResponse(err.Error())
 		w.WriteHeader(http.StatusUnauthorized)
 		_ = json.NewEncoder(w).Encode(res)
 		return
 	}
 
-	res := SuccessResponse{
+	res := commons.SuccessResponse{
 		Status: "success",
-		Token:  token,
+		Data: struct {
+			Token Token `json:"token"`
+		}{
+			Token: token,
+		},
 	}
 	w.WriteHeader(http.StatusOK)
 	_ = json.NewEncoder(w).Encode(res)
@@ -79,11 +79,17 @@ func (h *handler) login(w http.ResponseWriter, r *http.Request) {
 func (h *handler) register(w http.ResponseWriter, r *http.Request) {
 	var creds credentials
 	err := json.NewDecoder(r.Body).Decode(&creds)
-	if err != nil || creds.Username == nil || creds.Password == nil {
-		res := ErrorResponse{
-			Status:  "failed",
-			Message: "invalid parameter",
-		}
+	if err != nil {
+		res := commons.BuildErrorResponse("invalid request body")
+		w.WriteHeader(http.StatusBadRequest)
+		_ = json.NewEncoder(w).Encode(res)
+		return
+	}
+
+	validate := validator.New()
+	err = validate.Struct(creds)
+	if err != nil {
+		res := commons.BuildErrorResponse("invalid parameter")
 		w.WriteHeader(http.StatusBadRequest)
 		_ = json.NewEncoder(w).Encode(res)
 		return
@@ -91,18 +97,19 @@ func (h *handler) register(w http.ResponseWriter, r *http.Request) {
 
 	token, err := h.uc.Register(*creds.Username, *creds.Password)
 	if err != nil {
-		res := ErrorResponse{
-			Status:  "failed",
-			Message: err.Error(),
-		}
+		res := commons.BuildErrorResponse(err.Error())
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		_ = json.NewEncoder(w).Encode(res)
 		return
 	}
 
-	res := SuccessResponse{
+	res := commons.SuccessResponse{
 		Status: "success",
-		Token:  token,
+		Data: struct {
+			Token Token `json:"token"`
+		}{
+			Token: token,
+		},
 	}
 	w.WriteHeader(http.StatusOK)
 	_ = json.NewEncoder(w).Encode(res)

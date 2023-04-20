@@ -9,7 +9,7 @@ import (
 
 type UserRepositoryTestSuite struct {
 	suite.Suite
-	repo auth.UserRepository
+	repo *auth.UserRepository
 }
 
 func (s *UserRepositoryTestSuite) SetupTest() {

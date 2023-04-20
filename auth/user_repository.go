@@ -1,11 +1,11 @@
 package auth
 
-type userRepository struct {
+type UserRepository struct {
 	users map[Username]User
 }
 
-func NewUserRepository() *userRepository {
-	return &userRepository{
+func NewUserRepository() *UserRepository {
+	return &UserRepository{
 		users: map[Username]User{
 			Username("admin"): {
 				Username: "admin",
@@ -16,7 +16,7 @@ func NewUserRepository() *userRepository {
 	}
 }
 
-func (r *userRepository) FindByUsername(username string) *User {
+func (r *UserRepository) FindByUsername(username string) *User {
 	user, ok := r.users[Username(username)]
 	if !ok {
 		return nil
@@ -25,7 +25,7 @@ func (r *userRepository) FindByUsername(username string) *User {
 	return &user
 }
 
-func (r *userRepository) StoreUser(user User) error {
+func (r *UserRepository) StoreUser(user User) error {
 	r.users[user.Username] = user
 	return nil
 }

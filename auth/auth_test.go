@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/rakhmatullahyoga/mini-aspire/auth"
-	mocks "github.com/rakhmatullahyoga/mini-aspire/mocks/auth"
+	"github.com/rakhmatullahyoga/mini-aspire/auth/mocks"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 )
@@ -19,7 +19,7 @@ var (
 type AuthUsecaseTestSuite struct {
 	suite.Suite
 	repo *mocks.UserRepository
-	uc   auth.AuthUsecase
+	uc   auth.IAuthUsecase
 }
 
 func (s *AuthUsecaseTestSuite) SetupTest() {
