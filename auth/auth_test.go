@@ -19,7 +19,7 @@ var (
 type AuthUsecaseTestSuite struct {
 	suite.Suite
 	repo *mocks.UserRepository
-	uc   auth.IAuthUsecase
+	uc   *auth.AuthUsecase
 }
 
 func (s *AuthUsecaseTestSuite) SetupTest() {
