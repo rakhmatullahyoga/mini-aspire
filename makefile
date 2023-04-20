@@ -1,16 +1,16 @@
-setup-db:
-	@php artisan migrate --seed
+.PHONY: dep tidy compile test run
 
-setup-env:
-	@cp .env.example .env
+run: compile
+	./mini-aspire
 
-install:
-	@composer install
+dep:
+	go mod download
 
-setup: install setup-env setup-db
+tidy:
+	go mod tidy
 
-serve: setup
-	@php artisan serve
+compile:
+	go build -o mini-aspire cmd/main.go
 
-test: setup
-	@php artisan test
+test:
+	go test ./... -cover
