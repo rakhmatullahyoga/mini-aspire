@@ -16,6 +16,6 @@ func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	r.Use(middleware.SetHeader("Content-Type", "application/json"))
-	r.Mount("/auth", handlerAuth.AuthRouter())
+	r.Mount("/auth", handlerAuth.Router())
 	http.ListenAndServe("localhost:8080", r)
 }

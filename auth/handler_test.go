@@ -22,7 +22,7 @@ type AuthHandlerTestSuite struct {
 
 func (s *AuthHandlerTestSuite) SetupTest() {
 	s.uc = new(mocks.AuthUsecase)
-	s.handler = auth.NewHandler(s.uc).AuthRouter()
+	s.handler = auth.NewHandler(s.uc).Router()
 }
 
 func TestAuthHandler(t *testing.T) {

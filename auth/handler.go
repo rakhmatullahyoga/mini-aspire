@@ -37,7 +37,7 @@ func NewHandler(uc AuthUsecase) *handler {
 	}
 }
 
-func (h *handler) AuthRouter() *chi.Mux {
+func (h *handler) Router() *chi.Mux {
 	r := chi.NewRouter()
 	r.Post("/login", h.login)
 	r.Post("/register", h.register)
