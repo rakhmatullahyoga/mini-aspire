@@ -75,7 +75,7 @@ type LoanUsecase struct {
 	repaymentRepo IRepaymentRepository
 }
 
-func NewLoanUsecase(loanRepo ILoanRepository, repaymentRepo IRepaymentRepository) *LoanUsecase {
+func NewUsecase(loanRepo ILoanRepository, repaymentRepo IRepaymentRepository) *LoanUsecase {
 	return &LoanUsecase{
 		loanRepo:      loanRepo,
 		repaymentRepo: repaymentRepo,

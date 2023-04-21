@@ -9,6 +9,7 @@ import (
 	"github.com/rakhmatullahyoga/mini-aspire/commons"
 )
 
+//go:generate mockery --name=IAdminUsecase --structname IAdminUsecase --filename=IAdminUsecase.go --output=mocks
 type IAdminUsecase interface {
 	ListLoans(page int) ([]Loan, error)
 	ApproveLoan(loanID string) (*Loan, error)

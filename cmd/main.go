@@ -16,8 +16,8 @@ func main() {
 
 	loanRepo := loan.NewLoanRepository()
 	repaymentRepo := loan.NewRepaymentRepository()
-	loanUsecase := loan.NewLoanUsecase(loanRepo, repaymentRepo)
-	loanHandler := loan.NewHandler(loanUsecase)
+	loanUsecase := loan.NewUsecase(loanRepo, repaymentRepo)
+	loanHandler := loan.NewUserHandler(loanUsecase)
 	adminLoanHandler := loan.NewAdminHandler(loanUsecase)
 
 	r := chi.NewRouter()

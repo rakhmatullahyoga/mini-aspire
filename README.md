@@ -1,5 +1,5 @@
 # Mini-Aspire API
-Mini-Aspire is an app that allows authenticated users to go through a loan application.
+Mini-Aspire is an app that allows authenticated users to go through a loan application. This app is a stateless app, which means the data is always stored in memory and not being stored in a persistent database.
 
 ## Installation
 

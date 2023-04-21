@@ -31,7 +31,7 @@ type userHandler struct {
 	uc ILoanUsecase
 }
 
-func NewHandler(uc ILoanUsecase) *userHandler {
+func NewUserHandler(uc ILoanUsecase) *userHandler {
 	return &userHandler{
 		uc: uc,
 	}
