@@ -22,7 +22,7 @@ func validateJWT(next http.Handler) http.Handler {
 		}
 		reqToken = splitToken[1]
 		token, err := jwt.Parse(reqToken, func(t *jwt.Token) (interface{}, error) {
-			return commons.JwtKey, nil
+			return []byte(commons.JwtKey), nil
 		})
 
 		if err != nil {

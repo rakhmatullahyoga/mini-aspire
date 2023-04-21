@@ -71,6 +71,6 @@ func generateToken(user User) (Token, error) {
 		string(commons.ClaimsKeyUserID):  string(user.Username),
 		string(commons.ClaimsKeyIsAdmin): user.IsAdmin,
 	})
-	tokenStr, err := token.SignedString(commons.JwtKey)
+	tokenStr, err := token.SignedString([]byte(commons.JwtKey))
 	return Token(tokenStr), err
 }
