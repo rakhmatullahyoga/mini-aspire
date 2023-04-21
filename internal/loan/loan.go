@@ -9,14 +9,6 @@ import (
 	"github.com/rakhmatullahyoga/mini-aspire/commons"
 )
 
-type LoanStatus string
-
-const (
-	LoanStatusPending  LoanStatus = "pending"
-	LoanStatusApproved LoanStatus = "approved"
-	LoanStatusPaid     LoanStatus = "paid"
-)
-
 const (
 	pageSize  = 10
 	precision = 2
@@ -27,6 +19,14 @@ var (
 	errLoanNotApproved = errors.New("your loan is not approved")
 	errLoanAlreadyPaid = errors.New("your loan is already paid")
 	errInsufficient    = errors.New("insufficient payment amount")
+)
+
+type LoanStatus string
+
+const (
+	LoanStatusPending  LoanStatus = "pending"
+	LoanStatusApproved LoanStatus = "approved"
+	LoanStatusPaid     LoanStatus = "paid"
 )
 
 type Loan struct {
