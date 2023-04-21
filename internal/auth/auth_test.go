@@ -32,7 +32,7 @@ func TestAuthUsecase(t *testing.T) {
 }
 
 func (s *authUsecaseTestSuite) TestLoginUserNotFound() {
-	s.repo.On("FindByUsername", username).Return(nil).Once()
+	s.repo.On("FindByUsername", username).Return(nil, errors.New("user not found")).Once()
 	_, err := s.uc.Login(username, password)
 	s.Assert().NotNil(err)
 	s.Assert().Equal("invalid username or password", err.Error())
@@ -43,7 +43,7 @@ func (s *authUsecaseTestSuite) TestLoginWrongPassword() {
 		Username: auth.Username(username),
 		Password: auth.Password("password"),
 	}
-	s.repo.On("FindByUsername", username).Return(&user).Once()
+	s.repo.On("FindByUsername", username).Return(&user, nil).Once()
 	_, err := s.uc.Login(username, password)
 	s.Assert().NotNil(err)
 	s.Assert().Equal("invalid username or password", err.Error())
@@ -54,7 +54,7 @@ func (s *authUsecaseTestSuite) TestLoginSuccess() {
 		Username: auth.Username(username),
 		Password: auth.Password(password),
 	}
-	s.repo.On("FindByUsername", username).Return(&user).Once()
+	s.repo.On("FindByUsername", username).Return(&user, nil).Once()
 	token, err := s.uc.Login(username, password)
 	s.Assert().Nil(err)
 	s.Assert().NotNil(token)
@@ -65,14 +65,14 @@ func (s *authUsecaseTestSuite) TestRegisterExistingUser() {
 		Username: auth.Username(username),
 		Password: auth.Password(password),
 	}
-	s.repo.On("FindByUsername", username).Return(&user).Once()
+	s.repo.On("FindByUsername", username).Return(&user, nil).Once()
 	_, err := s.uc.Register(username, password)
 	s.Assert().NotNil(err)
 	s.Assert().Equal(fmt.Sprintf("username %s already registered", username), err.Error())
 }
 
 func (s *authUsecaseTestSuite) TestRegisterError() {
-	s.repo.On("FindByUsername", username).Return(nil).Once()
+	s.repo.On("FindByUsername", username).Return(nil, nil).Once()
 	s.repo.On("StoreUser", mock.Anything).Return(errors.New("unexpected")).Once()
 	_, err := s.uc.Register(username, password)
 	s.Assert().NotNil(err)
@@ -80,7 +80,7 @@ func (s *authUsecaseTestSuite) TestRegisterError() {
 }
 
 func (s *authUsecaseTestSuite) TestRegisterSuccess() {
-	s.repo.On("FindByUsername", username).Return(nil).Once()
+	s.repo.On("FindByUsername", username).Return(nil, nil).Once()
 	s.repo.On("StoreUser", mock.Anything).Return(nil).Once()
 	token, err := s.uc.Register(username, password)
 	s.Assert().Nil(err)
