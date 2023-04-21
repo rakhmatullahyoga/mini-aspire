@@ -1,12 +1,11 @@
 package commons
 
-import "github.com/golang-jwt/jwt/v5"
+type ClaimsKey string
 
-type Claims struct {
-	UserID  string `json:"user_id"`
-	IsAdmin bool   `json:"is_admin"`
-	jwt.RegisteredClaims
-}
+const (
+	ClaimsKeyUserID  ClaimsKey = "user_id"
+	ClaimsKeyIsAdmin ClaimsKey = "is_admin"
+)
 
 var (
 	JwtKey = []byte("some_secret_key")

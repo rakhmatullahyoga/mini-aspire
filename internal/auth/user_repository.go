@@ -1,5 +1,7 @@
 package auth
 
+import "github.com/rakhmatullahyoga/mini-aspire/commons"
+
 type UserRepository struct {
 	users map[Username]User
 }
@@ -16,13 +18,13 @@ func NewUserRepository() *UserRepository {
 	}
 }
 
-func (r *UserRepository) FindByUsername(username string) *User {
+func (r *UserRepository) FindByUsername(username string) (*User, error) {
 	user, ok := r.users[Username(username)]
 	if !ok {
-		return nil
+		return nil, commons.ErrRecordNotFound
 	}
 
-	return &user
+	return &user, nil
 }
 
 func (r *UserRepository) StoreUser(user User) error {

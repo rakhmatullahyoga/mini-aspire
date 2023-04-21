@@ -24,7 +24,7 @@ var (
 
 //go:generate mockery --name=IUserRepository --structname IUserRepository --filename=IUserRepository.go --output=mocks
 type IUserRepository interface {
-	FindByUsername(username string) *User
+	FindByUsername(username string) (*User, error)
 	StoreUser(user User) error
 }
 
@@ -39,8 +39,8 @@ func NewUsecase(repo IUserRepository) *AuthUsecase {
 }
 
 func (u *AuthUsecase) Login(username, password string) (Token, error) {
-	user := u.repo.FindByUsername(username)
-	if user == nil || user.Password != Password(password) {
+	user, err := u.repo.FindByUsername(username)
+	if err != nil || user.Password != Password(password) {
 		return "", errInvalidLogin
 	}
 
@@ -48,7 +48,7 @@ func (u *AuthUsecase) Login(username, password string) (Token, error) {
 }
 
 func (u *AuthUsecase) Register(username, password string) (Token, error) {
-	existUser := u.repo.FindByUsername(username)
+	existUser, _ := u.repo.FindByUsername(username)
 	if existUser != nil {
 		return "", fmt.Errorf("username %s already registered", username)
 	}
@@ -67,13 +67,10 @@ func (u *AuthUsecase) Register(username, password string) (Token, error) {
 }
 
 func generateToken(user User) (Token, error) {
-	claims := &commons.Claims{
-		UserID:           string(user.Username),
-		IsAdmin:          user.IsAdmin,
-		RegisteredClaims: jwt.RegisteredClaims{},
-	}
-
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		string(commons.ClaimsKeyUserID):  string(user.Username),
+		string(commons.ClaimsKeyIsAdmin): user.IsAdmin,
+	})
 	tokenStr, err := token.SignedString(commons.JwtKey)
 	return Token(tokenStr), err
 }

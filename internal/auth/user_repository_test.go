@@ -3,41 +3,45 @@ package auth_test
 import (
 	"testing"
 
+	"github.com/rakhmatullahyoga/mini-aspire/commons"
 	"github.com/rakhmatullahyoga/mini-aspire/internal/auth"
 	"github.com/stretchr/testify/suite"
 )
 
-type UserRepositoryTestSuite struct {
+type userRepositoryTestSuite struct {
 	suite.Suite
 	repo *auth.UserRepository
 }
 
-func (s *UserRepositoryTestSuite) SetupTest() {
+func (s *userRepositoryTestSuite) SetupTest() {
 	s.repo = auth.NewUserRepository()
 }
 
 func TestUserRepository(t *testing.T) {
-	suite.Run(t, new(UserRepositoryTestSuite))
+	suite.Run(t, new(userRepositoryTestSuite))
 }
 
-func (s *UserRepositoryTestSuite) TestFindByUsernameNotFound() {
-	user := s.repo.FindByUsername("nonadmin")
+func (s *userRepositoryTestSuite) TestFindByUsernameNotFound() {
+	user, err := s.repo.FindByUsername("nonadmin")
+	s.Assert().NotNil(err)
+	s.Assert().Equal(commons.ErrRecordNotFound.Error(), err.Error())
 	s.Assert().Nil(user)
 }
 
-func (s *UserRepositoryTestSuite) TestFindByUsernameFound() {
-	user := s.repo.FindByUsername("admin")
+func (s *userRepositoryTestSuite) TestFindByUsernameFound() {
+	user, err := s.repo.FindByUsername("admin")
+	s.Assert().Nil(err)
 	s.Assert().NotNil(user)
 	s.Assert().Equal(auth.Username("admin"), user.Username)
 }
 
-func (s *UserRepositoryTestSuite) TestStoreUser() {
+func (s *userRepositoryTestSuite) TestStoreUser() {
 	user := auth.User{
 		Username: auth.Username("user1"),
 		Password: auth.Password("pass"),
 	}
 	err := s.repo.StoreUser(user)
-	userStored := s.repo.FindByUsername("user1")
+	userStored, _ := s.repo.FindByUsername("user1")
 	s.Assert().Nil(err)
 	s.Assert().NotNil(userStored)
 	s.Assert().Equal(user.Username, userStored.Username)
