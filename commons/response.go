@@ -2,7 +2,7 @@ package commons
 
 type SuccessResponse struct {
 	Status string      `json:"status"`
-	Data   interface{} `json:"token"`
+	Data   interface{} `json:"data"`
 }
 
 type ErrorResponse struct {
