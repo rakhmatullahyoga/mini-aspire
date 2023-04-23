@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -26,5 +27,8 @@ func main() {
 	r.Mount("/auth", authHandler.Router())
 	r.Mount("/loans", loanHandler.Router())
 	r.Mount("/admin", adminLoanHandler.Router())
-	http.ListenAndServe("localhost:8080", r)
+	err := http.ListenAndServe("localhost:8080", r)
+	if err != nil {
+		log.Fatalf("cannot serve from localhost:8080 : %s\n", err.Error())
+	}
 }

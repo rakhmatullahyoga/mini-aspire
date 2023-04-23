@@ -5,7 +5,39 @@ import (
 
 	"github.com/rakhmatullahyoga/mini-aspire/internal/loan"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
+
+type loanRepositoryTestSuite struct {
+	suite.Suite
+	repo *loan.LoanRepository
+}
+
+func (s *loanRepositoryTestSuite) SetupTest() {
+	s.repo = loan.NewLoanRepository()
+}
+
+func TestLoanRepository(t *testing.T) {
+	suite.Run(t, new(loanRepositoryTestSuite))
+}
+
+func (s *loanRepositoryTestSuite) TestStoreLoan() {}
+
+func (s *loanRepositoryTestSuite) TestListUserLoansNoData() {}
+
+func (s *loanRepositoryTestSuite) TestListUserLoansFound() {}
+
+func (s *loanRepositoryTestSuite) TestGetLoanByIDNotFound() {}
+
+func (s *loanRepositoryTestSuite) TestGetLoanByIDFound() {}
+
+func (s *loanRepositoryTestSuite) TestListLoansNoData() {}
+
+func (s *loanRepositoryTestSuite) TestListLoansFound() {}
+
+func (s *loanRepositoryTestSuite) TestSetLoanStatusNotFound() {}
+
+func (s *loanRepositoryTestSuite) TestSetLoanStatusSuccess() {}
 
 func TestLoanRepository_StoreLoan(t *testing.T) {
 	repo := loan.NewLoanRepository()

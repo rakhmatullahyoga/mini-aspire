@@ -23,3 +23,13 @@ func (s *adminHandlerTestSuite) SetupTest() {
 func TestAdminHandler(t *testing.T) {
 	suite.Run(t, new(adminHandlerTestSuite))
 }
+
+func (s *adminHandlerTestSuite) TestAdminListLoansError() {}
+
+func (s *adminHandlerTestSuite) TestAdminListLoansSuccess() {}
+
+func (s *adminHandlerTestSuite) TestAdminApproveLoanNotFound() {}
+
+func (s *adminHandlerTestSuite) TestAdminApproveLoanError() {}
+
+func (s *adminHandlerTestSuite) TestAdminApproveLoanSuccess() {}

@@ -19,3 +19,17 @@ func (s *repaymentRepositoryTestSuite) SetupTest() {
 func TestRepaymentRepository(t *testing.T) {
 	suite.Run(t, new(repaymentRepositoryTestSuite))
 }
+
+func (s *repaymentRepositoryTestSuite) TestBulkStoreRepayment() {}
+
+func (s *repaymentRepositoryTestSuite) TestListLoanRepaymentsNoData() {}
+
+func (s *repaymentRepositoryTestSuite) TestListLoanRepaymentsFound() {}
+
+func (s *repaymentRepositoryTestSuite) TestGetFirstPendingRepaymentNotFound() {}
+
+func (s *repaymentRepositoryTestSuite) TestGetFirstPendingRepaymentFound() {}
+
+func (s *repaymentRepositoryTestSuite) TestUpdateRepaymentErrorInvalid() {}
+
+func (s *repaymentRepositoryTestSuite) TestUpdateRepaymentSuccess() {}

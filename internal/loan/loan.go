@@ -186,33 +186,31 @@ func (u *LoanUsecase) UserSubmitRepayment(ctx context.Context, loanID string, am
 		return nil, err
 	}
 
-	if repayment != nil {
-		if repayment.Amount > amount {
-			return nil, errInsufficient
-		}
+	if repayment == nil {
+		return nil, errLoanAlreadyPaid
+	}
 
-		repayment.Status = RepaymentStatusPaid
-		err = u.repaymentRepo.UpdateRepayment(*repayment)
+	if repayment.Amount > amount {
+		return nil, errInsufficient
+	}
+
+	repayment.Status = RepaymentStatusPaid
+	err = u.repaymentRepo.UpdateRepayment(*repayment)
+	if err != nil {
+		return nil, err
+	}
+
+	nextRepayment, err := u.repaymentRepo.GetFirstPendingRepayment(loanID)
+	if err != nil && err != commons.ErrRecordNotFound {
+		return nil, err
+	}
+
+	if nextRepayment == nil {
+		_, err = u.loanRepo.SetLoanStatus(loanID, LoanStatusPaid)
 		if err != nil {
 			return nil, err
 		}
-
-		nextRepayment, err := u.repaymentRepo.GetFirstPendingRepayment(loanID)
-		if err != nil && err != commons.ErrRecordNotFound {
-			return nil, err
-		}
-
-		if nextRepayment == nil {
-			_, err = u.loanRepo.SetLoanStatus(loanID, LoanStatusPaid)
-			if err != nil {
-				return nil, err
-			}
-
-			return repayment, nil
-		} else {
-			return repayment, nil
-		}
 	}
 
-	return nil, errLoanAlreadyPaid
+	return repayment, nil
 }

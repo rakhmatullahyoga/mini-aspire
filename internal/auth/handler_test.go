@@ -40,7 +40,11 @@ func (s *authHandlerTestSuite) TestLoginInvalidRequestBody() {
 	handler := http.HandlerFunc(s.handler.ServeHTTP)
 	handler.ServeHTTP(rr, req)
 	var resp commons.ErrorResponse
-	json.Unmarshal(rr.Body.Bytes(), &resp)
+	err = json.Unmarshal(rr.Body.Bytes(), &resp)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	s.Assert().Equal(http.StatusBadRequest, rr.Code)
 	s.Assert().Equal("failed", resp.Status)
 	s.Assert().Equal("invalid request body", resp.Message)
@@ -61,7 +65,11 @@ func (s *authHandlerTestSuite) TestLoginInvalidParameter() {
 	handler := http.HandlerFunc(s.handler.ServeHTTP)
 	handler.ServeHTTP(rr, req)
 	var resp commons.ErrorResponse
-	json.Unmarshal(rr.Body.Bytes(), &resp)
+	err = json.Unmarshal(rr.Body.Bytes(), &resp)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	s.Assert().Equal(http.StatusBadRequest, rr.Code)
 	s.Assert().Equal("failed", resp.Status)
 	s.Assert().Equal("invalid parameter", resp.Message)
@@ -85,7 +93,11 @@ func (s *authHandlerTestSuite) TestLoginFailed() {
 	handler := http.HandlerFunc(s.handler.ServeHTTP)
 	handler.ServeHTTP(rr, req)
 	var resp commons.ErrorResponse
-	json.Unmarshal(rr.Body.Bytes(), &resp)
+	err = json.Unmarshal(rr.Body.Bytes(), &resp)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	s.Assert().Equal(http.StatusUnauthorized, rr.Code)
 	s.Assert().Equal("failed", resp.Status)
 	s.Assert().Equal("invalid username or password", resp.Message)
@@ -109,7 +121,11 @@ func (s *authHandlerTestSuite) TestLoginSuccess() {
 	handler := http.HandlerFunc(s.handler.ServeHTTP)
 	handler.ServeHTTP(rr, req)
 	var resp commons.SuccessResponse
-	json.Unmarshal(rr.Body.Bytes(), &resp)
+	err = json.Unmarshal(rr.Body.Bytes(), &resp)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	data := map[string]interface{}{
 		"token": "token",
 	}
@@ -128,7 +144,11 @@ func (s *authHandlerTestSuite) TestRegisterInvalidRequestBody() {
 	handler := http.HandlerFunc(s.handler.ServeHTTP)
 	handler.ServeHTTP(rr, req)
 	var resp commons.ErrorResponse
-	json.Unmarshal(rr.Body.Bytes(), &resp)
+	err = json.Unmarshal(rr.Body.Bytes(), &resp)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	s.Assert().Equal(http.StatusBadRequest, rr.Code)
 	s.Assert().Equal("failed", resp.Status)
 	s.Assert().Equal("invalid request body", resp.Message)
@@ -149,7 +169,11 @@ func (s *authHandlerTestSuite) TestRegisterInvalidParameter() {
 	handler := http.HandlerFunc(s.handler.ServeHTTP)
 	handler.ServeHTTP(rr, req)
 	var resp commons.ErrorResponse
-	json.Unmarshal(rr.Body.Bytes(), &resp)
+	err = json.Unmarshal(rr.Body.Bytes(), &resp)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	s.Assert().Equal(http.StatusBadRequest, rr.Code)
 	s.Assert().Equal("failed", resp.Status)
 	s.Assert().Equal("invalid parameter", resp.Message)
@@ -173,7 +197,11 @@ func (s *authHandlerTestSuite) TestRegisterFailed() {
 	handler := http.HandlerFunc(s.handler.ServeHTTP)
 	handler.ServeHTTP(rr, req)
 	var resp commons.ErrorResponse
-	json.Unmarshal(rr.Body.Bytes(), &resp)
+	err = json.Unmarshal(rr.Body.Bytes(), &resp)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	s.Assert().Equal(http.StatusUnprocessableEntity, rr.Code)
 	s.Assert().Equal("failed", resp.Status)
 	s.Assert().Equal("user already existed", resp.Message)
@@ -197,7 +225,11 @@ func (s *authHandlerTestSuite) TestRegisterSuccess() {
 	handler := http.HandlerFunc(s.handler.ServeHTTP)
 	handler.ServeHTTP(rr, req)
 	var resp commons.SuccessResponse
-	json.Unmarshal(rr.Body.Bytes(), &resp)
+	err = json.Unmarshal(rr.Body.Bytes(), &resp)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	data := map[string]interface{}{
 		"token": "token",
 	}
