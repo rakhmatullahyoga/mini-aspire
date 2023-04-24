@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/rakhmatullahyoga/mini-aspire/commons"
+	"github.com/rakhmatullahyoga/mini-aspire/internal/auth"
 )
 
 //go:generate mockery --name=IAdminUsecase --structname IAdminUsecase --filename=IAdminUsecase.go --output=mocks
@@ -27,8 +28,8 @@ func NewAdminHandler(uc IAdminUsecase) *adminHandler {
 
 func (h *adminHandler) Router() *chi.Mux {
 	r := chi.NewRouter()
-	r.Use(validateJWT)
-	r.Use(ensureAdmin)
+	r.Use(auth.ValidateJWT)
+	r.Use(auth.EnsureAdmin)
 	r.Get("/loans", h.adminListLoans)
 	r.Post("/loans/{loanID}", h.adminApproveLoan)
 	return r

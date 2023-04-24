@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator/v10"
 	"github.com/rakhmatullahyoga/mini-aspire/commons"
+	"github.com/rakhmatullahyoga/mini-aspire/internal/auth"
 )
 
 type LoanRequest struct {
@@ -39,7 +40,7 @@ func NewUserHandler(uc ILoanUsecase) *userHandler {
 
 func (h *userHandler) Router() *chi.Mux {
 	r := chi.NewRouter()
-	r.Use(validateJWT)
+	r.Use(auth.ValidateJWT)
 	r.Post("/", h.submitLoan)
 	r.Get("/", h.listUserLoans)
 	r.Get("/{loanID}", h.userGetLoan)

@@ -1,4 +1,4 @@
-package loan
+package auth
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"github.com/rakhmatullahyoga/mini-aspire/commons"
 )
 
-func validateJWT(next http.Handler) http.Handler {
+func ValidateJWT(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		reqToken := r.Header.Get("Authorization")
 		splitToken := strings.Split(reqToken, "Bearer ")
@@ -53,7 +53,7 @@ func validateJWT(next http.Handler) http.Handler {
 	})
 }
 
-func ensureAdmin(next http.Handler) http.Handler {
+func EnsureAdmin(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		admin := ctx.Value(commons.ClaimsKeyIsAdmin).(bool)
