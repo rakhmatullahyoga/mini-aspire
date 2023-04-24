@@ -19,6 +19,7 @@ type User struct {
 }
 
 var (
+	JwtKey          = "some_secret_key"
 	errInvalidLogin = errors.New("invalid username or password")
 )
 
@@ -71,6 +72,6 @@ func generateToken(user User) (Token, error) {
 		string(commons.ClaimsKeyUserID):  string(user.Username),
 		string(commons.ClaimsKeyIsAdmin): user.IsAdmin,
 	})
-	tokenStr, err := token.SignedString([]byte(commons.JwtKey))
+	tokenStr, err := token.SignedString([]byte(JwtKey))
 	return Token(tokenStr), err
 }

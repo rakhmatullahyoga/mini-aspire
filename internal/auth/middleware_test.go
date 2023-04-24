@@ -64,7 +64,7 @@ func TestValidateJWT(t *testing.T) {
 	token, err = jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		string(commons.ClaimsKeyUserID):  "123",
 		string(commons.ClaimsKeyIsAdmin): true,
-	}).SignedString([]byte(commons.JwtKey))
+	}).SignedString([]byte(auth.JwtKey))
 	if err != nil {
 		t.Fatal(err)
 	}
